@@ -1,0 +1,67 @@
+== Neo4j Schema Enforcer extension
+
+This is a Neo4j Kernel Extension that allows you to enforce certain schema on graph nodes.
+
+Since it is Neo4j already supports property existence constraints, this plugin only validates, that
+properties are of same type as specified node schema definition.
+
+=== How does it work?
+This extension is a custom TransactionEventHandler.
+It does not validates existing nodes, but prevents adding of new properties to nodes if they are of invalid type.
+
+=== Installation
+* Clone this repository and run `mvn install`
+* Copy `target/neo4j.schema_enforcer-0.0.1-SNAPSHOT.jar` to `plugins` forlder of Neo4j installation
+* Restart Neo4j
+
+===  Node Schemas
+
+Schemas are stored in nodes with *Metadata* label.
+
+Each node defining schema should have following properties:
+
+ * `label` - label of taget nodes on which schema should be enforced
+ * `schema` - definition of schema for nodes having the same label as the one in `label` property
+
+It is *highly advised* to create an unique constraint on Metadata.label property:
+
+`CREATE CONSTRAINT ON (m:Metadata) ASSERT m.label IS UNIQUE`
+
+Schema definition is stored as collection of strings where each element specifies type of one property in following format:
+`propertyName:propertyType`.
+
+Supported property types:
+
+* `bool` - boolean values
+* `int` - integers
+* `number` - integers or floating point numbers
+* `string` - strings
+* `array[bool]` - collection of boolean values
+* `array[int]` - collection of integers
+* `array[number]` - collection of integers or floating point numbers
+* `array[string]` - collection of strings
+
+=== Example Node Schema
+This statement will create example schema definition for `Book` nodes.
+```
+CREATE (m:Metadata)
+    SET m.label = "Book",
+        m.schema = [
+            "title:string",
+            "price:number",
+            "pages:int",
+            "available:bool",
+            "reviews:array[string]"
+        ]
+RETURN m
+```
+
+You may add adding adding new Book nodes:
+
+`CREATE (b:Book) SET b.title = 'The Book', b.price = 9.99, b.reviews = ['Best book ever!', 'I recommend it!'] RETURN b`
+
+However if you attept to add a Book node with properties that do not conform with given schema:
+
+`CREATE (b:Book) SET b.title = 'Yet Another Book', b.price = 'free', b.pages = 3.14159, b.reviews = [2,3,1] RETURN b`
+
+transaction will be rolled back (provided that *Schema Enforcer* is correctly installed).
