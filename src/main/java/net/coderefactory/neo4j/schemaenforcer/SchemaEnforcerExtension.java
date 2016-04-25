@@ -4,7 +4,6 @@ import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.event.TransactionEventHandler;
 import org.neo4j.kernel.extension.KernelExtensionFactory;
 import org.neo4j.kernel.impl.logging.LogService;
-import org.neo4j.kernel.impl.logging.StoreLogService;
 import org.neo4j.kernel.impl.spi.KernelContext;
 import org.neo4j.kernel.lifecycle.Lifecycle;
 import org.neo4j.kernel.lifecycle.LifecycleAdapter;
@@ -14,6 +13,7 @@ import java.util.Objects;
 
 /**
  * This class registers Schema Enforcer extension.
+ *
  * @author jstrzelecki
  */
 public class SchemaEnforcerExtension extends KernelExtensionFactory<SchemaEnforcerExtension.Dependencies> {
@@ -29,7 +29,7 @@ public class SchemaEnforcerExtension extends KernelExtensionFactory<SchemaEnforc
     @Override
     public Lifecycle newInstance(final KernelContext context, final Dependencies dependencies) throws Throwable {
         final GraphDatabaseService graphDatabaseService = Objects.requireNonNull(dependencies.getGraphDatabaseService(), "GraphDatabaseService is required");
-        final LogService logService = Objects.requireNonNull(dependencies.getStoreLogService(), "LogService is required");
+        final LogService logService = Objects.requireNonNull(dependencies.getLogService(), "LogService is required");
 
         final Log log = logService.getUserLog(SchemaEnforcerExtension.class);
 
@@ -63,6 +63,6 @@ public class SchemaEnforcerExtension extends KernelExtensionFactory<SchemaEnforc
 
     public interface Dependencies {
         GraphDatabaseService getGraphDatabaseService();
-        StoreLogService getStoreLogService();
+        LogService getLogService();
     }
 }

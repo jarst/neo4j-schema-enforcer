@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.event.TransactionEventHandler;
+import org.neo4j.kernel.impl.logging.LogService;
 import org.neo4j.kernel.impl.logging.StoreLogService;
 import org.neo4j.kernel.impl.spi.KernelContext;
 import org.neo4j.kernel.lifecycle.Lifecycle;
@@ -23,12 +24,10 @@ public class SchemaEnforcerExtensionTest {
 
     @Mock
     private GraphDatabaseService graphDatabaseService;
-
     @Mock
     private StoreLogService logService;
     @Mock
     private Log log;
-
     @Mock
     private KernelContext context;
 
@@ -44,9 +43,8 @@ public class SchemaEnforcerExtensionTest {
             public GraphDatabaseService getGraphDatabaseService() {
                 return graphDatabaseService;
             }
-
             @Override
-            public StoreLogService getStoreLogService() {
+            public LogService getLogService() {
                 return logService;
             }
         });
