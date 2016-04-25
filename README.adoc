@@ -45,13 +45,13 @@ Supported property types:
 This statement will create example schema definition for `Book` nodes.
 ```
 CREATE (m:Metadata)
-    SET m.label = "Book",
+    SET m.label = 'Book',
         m.schema = [
-            "title:string",
-            "price:number",
-            "pages:int",
-            "available:bool",
-            "reviews:array[string]"
+            'title:string',
+            'price:number',
+            'pages:int',
+            'available:bool',
+            'reviews:array[string]'
         ]
 RETURN m
 ```
