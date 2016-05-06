@@ -1,5 +1,5 @@
 == Neo4j Schema Enforcer extension
-[![Build Status](https://travis-ci.org/jarst/neo4j-schema-enforcer.svg?branch=master)](https://travis-ci.org/jarst/neo4j-schema-enforcer)
+image:https://travis-ci.org/jarst/neo4j-schema-enforcer.svg?branch=master["Build Status", link="https://travis-ci.org/jarst/neo4j-schema-enforcer"]
 
 This is a Neo4j Kernel Extension that allows you to enforce certain schema on graph nodes.
 
