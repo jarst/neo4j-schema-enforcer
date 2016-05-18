@@ -1,4 +1,4 @@
-package net.coderefactory.neo4j.schemaenforcer;
+package net.coderefactory.neo4j.schemaenforcer.validation;
 
 import java.lang.reflect.Array;
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.Map;
  * This class is responsible for validating single node properties.
  * @author jstrzelecki
  */
-abstract class PropertyTypeValidator {
+abstract public class PropertyTypeValidator {
 
     public static final String BOOL = "bool";
     public static final String INT = "int";

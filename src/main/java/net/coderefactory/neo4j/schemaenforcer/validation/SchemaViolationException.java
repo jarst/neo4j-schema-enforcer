@@ -1,4 +1,4 @@
-package net.coderefactory.neo4j.schemaenforcer;
+package net.coderefactory.neo4j.schemaenforcer.validation;
 
 public class SchemaViolationException extends Exception {
 

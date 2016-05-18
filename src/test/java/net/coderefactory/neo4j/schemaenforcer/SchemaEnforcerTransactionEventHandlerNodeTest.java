@@ -1,5 +1,7 @@
 package net.coderefactory.neo4j.schemaenforcer;
 
+import net.coderefactory.neo4j.schemaenforcer.validation.PropertyTypeValidator;
+import net.coderefactory.neo4j.schemaenforcer.validation.SchemaViolationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

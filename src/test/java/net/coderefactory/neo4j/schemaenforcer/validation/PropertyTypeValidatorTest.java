@@ -1,5 +1,6 @@
-package net.coderefactory.neo4j.schemaenforcer;
+package net.coderefactory.neo4j.schemaenforcer.validation;
 
+import net.coderefactory.neo4j.schemaenforcer.validation.PropertyTypeValidator;
 import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
