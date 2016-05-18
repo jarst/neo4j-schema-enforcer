@@ -38,7 +38,7 @@ public class SchemaEnforcerTransactionEventHandler extends TransactionEventHandl
         return null;
     }
 
-    private void validatePropertyEntry(PropertyEntry<? extends PropertyContainer> prop) throws Exception {
+    private void validatePropertyEntry(PropertyEntry<? extends PropertyContainer> prop) throws SchemaViolationException {
         final Map<String, String> schema = schemaProvider.getSchema(prop.entity());
 
         final String key = prop.key();
@@ -48,7 +48,7 @@ public class SchemaEnforcerTransactionEventHandler extends TransactionEventHandl
         }
     }
 
-    private void validateProperty(final String key, final String propType, final Object value) throws Exception {
+    private void validateProperty(final String key, final String propType, final Object value) throws SchemaViolationException {
         final PropertyTypeValidator propertyTypeValidator = PropertyTypeValidator.get(propType);
         if (propertyTypeValidator != null) {
             if (!propertyTypeValidator.isValid(value)) {
@@ -59,10 +59,10 @@ public class SchemaEnforcerTransactionEventHandler extends TransactionEventHandl
         }
     }
 
-    private void rollback(final String property, final String type) throws Exception {
+    private void rollback(final String property, final String type) throws SchemaViolationException {
         final String msg = "Constraint violation: property '" + property + "' was not of type: " + type;
         log.error(msg);
-        throw new Exception(msg);
+        throw new SchemaViolationException(msg);
     }
 
     @Override

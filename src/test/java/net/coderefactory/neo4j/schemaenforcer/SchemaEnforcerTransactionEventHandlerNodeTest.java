@@ -84,7 +84,7 @@ public class SchemaEnforcerTransactionEventHandlerNodeTest {
         schemaEnforcer.beforeCommit(data);
     }
 
-    @Test(expected = Exception.class)
+    @Test(expected = SchemaViolationException.class)
     public void testRollbackOnInValidSchema() throws Exception {
         schema.put(FIELD, PropertyTypeValidator.NUMBER);
 

@@ -1,7 +1,7 @@
 == Neo4j Schema Enforcer extension
 image:https://travis-ci.org/jarst/neo4j-schema-enforcer.svg?branch=master["Build Status", link="https://travis-ci.org/jarst/neo4j-schema-enforcer"]
 image:https://coveralls.io/repos/github/jarst/neo4j-schema-enforcer/badge.svg?branch=master["Coverage", link=https://coveralls.io/github/jarst/neo4j-schema-enforcer?branch=master]
-image:https://api.codacy.com/project/badge/Grade/91ab5784f82c4efc9e6714a6ab2c45bb["Codacy code quality", link="https://www.codacy.com/app/jarek-strzelecki/neo4j-schema-enforcer?utm_source=github.com&utm_medium=referral&utm_content=jarst/neo4j-schema-enforcer&utm_campaign=Badge_Grade"]
+image:https://api.codacy.com/project/badge/Grade/91ab5784f82c4efc9e6714a6ab2c45bb["Codacy code quality", link="https://www.codacy.com/app/jarst/neo4j-schema-enforcer?utm_source=github.com&utm_medium=referral&utm_content=jarst/neo4j-schema-enforcer&utm_campaign=Badge_Grade"]
 
 This is a Neo4j Kernel Extension that allows you to enforce certain schema on graph nodes and edges.
 
