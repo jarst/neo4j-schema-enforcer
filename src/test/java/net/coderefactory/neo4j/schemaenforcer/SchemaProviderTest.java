@@ -5,16 +5,18 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.neo4j.graphdb.DynamicLabel;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Label;
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.*;
 
 import java.util.Collections;
 import java.util.Map;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 
@@ -24,40 +26,74 @@ import static org.mockito.Mockito.when;
 @RunWith(MockitoJUnitRunner.class)
 public class SchemaProviderTest {
 
+    private static final String TYPED_CONTAINER = "TypedContainer";
+
     @Mock
     private GraphDatabaseService graphDatabaseService;
 
     @Mock
-    private Node schemaNode, dateNode;
+    private Node schemaNode, dataNode;
 
-    private final Label nodeLabel = DynamicLabel.label("NodeType");
+    @Mock
+    private Relationship relationship;
 
-    private String[] schema = new String[]{"name:string", "price:number", "points:array[int]",
+    private String[] schemaDefinition = new String[]{"name:string", "price:number", "points:array[int]",
             "no_separator", "two_separators:foo:bar" };
 
     private SchemaProvider schemaProvider;
 
     @Before
     public void setUp() throws Exception {
-        when(graphDatabaseService.findNode(DbSchemaProvider.METADATA, DbSchemaProvider.LABEL_PROPERTY, nodeLabel.name()))
+        when(graphDatabaseService.findNode(DbSchemaProvider.METADATA, DbSchemaProvider.LABEL_PROPERTY, TYPED_CONTAINER))
                 .thenReturn(schemaNode);
-        when(schemaNode.getProperty(DbSchemaProvider.SCHEMA_PROPERTY)).thenReturn(schema);
+        when(schemaNode.getProperty(DbSchemaProvider.SCHEMA_PROPERTY))
+                .thenReturn(schemaDefinition);
 
-        when(dateNode.getLabels()).thenReturn(Collections.singleton(nodeLabel));
+        when(dataNode.getLabels()).thenReturn(Collections.singleton(DynamicLabel.label(TYPED_CONTAINER)));
+
+        when(relationship.getType()).thenReturn(DynamicRelationshipType.withName(TYPED_CONTAINER));
 
         schemaProvider = new DbSchemaProvider(graphDatabaseService);
     }
 
     @Test
-    public void testGetNodeSchema() throws Exception {
-        final Map<String, String> nodeSchema = schemaProvider.getSchema(dateNode);
+    public void testGetSchemaForNode() throws Exception {
+        final Map<String, String> schema = schemaProvider.getSchema(dataNode);
 
-        assertEquals("string", nodeSchema.get("name"));
-        assertEquals("number", nodeSchema.get("price"));
-        assertEquals("array[int]", nodeSchema.get("points"));
+        assertNotNull("Schema is returned", this.schemaDefinition);
+        assertThat(schema.isEmpty(), is(false));
 
-        assertNull(nodeSchema.get("no_separator"));
-        assertNull(nodeSchema.get("two_separator"));
-        assertNull(nodeSchema.get("not_defined"));
+        assertEquals("string", schema.get("name"));
+        assertEquals("number", schema.get("price"));
+        assertEquals("array[int]", schema.get("points"));
+
+        assertNull(schema.get("no_separator"));
+        assertNull(schema.get("two_separator"));
+        assertNull(schema.get("not_defined"));
+    }
+
+    @Test
+    public void testGetSchemaForRelationship() throws Exception {
+        final Map<String, String> schema = schemaProvider.getSchema(relationship);
+
+        assertNotNull("Schema is returned", schema);
+        assertThat(schema.isEmpty(), is(false));
+
+        assertEquals("string", schema.get("name"));
+        assertEquals("number", schema.get("price"));
+        assertEquals("array[int]", schema.get("points"));
+
+        assertNull(schema.get("no_separator"));
+        assertNull(schema.get("two_separator"));
+        assertNull(schema.get("not_defined"));
+    }
+
+    @Test
+    public void handleUnsupportedPropertyContainer() {
+        final PropertyContainer unsupportedContainer = mock(PropertyContainer.class);
+        final Map<String, String> schema = schemaProvider.getSchema(unsupportedContainer);
+
+        assertNotNull("Schema is returned", schema);
+        assertThat("Schema for unsupported PropertyContainer is empty", schema.isEmpty(), is(true));
     }
 }
