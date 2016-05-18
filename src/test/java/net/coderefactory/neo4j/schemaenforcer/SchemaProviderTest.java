@@ -50,7 +50,7 @@ public class SchemaProviderTest {
 
     @Test
     public void testGetNodeSchema() throws Exception {
-        final Map<String, String> nodeSchema = schemaProvider.getNodeSchema(dateNode);
+        final Map<String, String> nodeSchema = schemaProvider.getSchema(dateNode);
 
         assertEquals("string", nodeSchema.get("name"));
         assertEquals("number", nodeSchema.get("price"));

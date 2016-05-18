@@ -1,10 +1,8 @@
 package net.coderefactory.neo4j.schemaenforcer;
 
-import org.neo4j.graphdb.DynamicLabel;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Label;
-import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.*;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,22 +29,41 @@ public class DbSchemaProvider implements SchemaProvider {
 
     /** {@inheritDoc} */
     @Override
-    public Map<String, String> getNodeSchema(final Node node) {
-        final Map<String, String> nodeSchema = new HashMap<>(); //TODO introduce caching?
+    public Map<String, String> getSchema(final PropertyContainer propertyContainer) {
+        if (propertyContainer instanceof Node) {
+            return getSchema((Node) propertyContainer);
+        } else if (propertyContainer instanceof Relationship) {
+            return getSchema((Relationship) propertyContainer);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
 
+    private Map<String, String> getSchema(final Node node) {
+        final Map<String, String> schema = new HashMap<>();
         for (final Label label : node.getLabels()) {
-            final Node metaNode = graphDatabaseService.findNode(METADATA, LABEL_PROPERTY, label.name());
-            if (metaNode != null) {
-                final String[] schemaEntries = (String[]) metaNode.getProperty(SCHEMA_PROPERTY);
-                for (final String entry : schemaEntries) {
-                    final String[] splitted = entry.trim().split(PROP_NAME_TYPE_SEPARATOR);
-                    if (splitted.length == 2) {
-                        nodeSchema.put(splitted[0], splitted[1]);
-                    }
+            retrieveSchema(schema, label.name());
+        }
+        return schema;
+    }
+
+    private Map<String, String> getSchema(final Relationship relationship) {
+        final Map<String, String> schema = new HashMap<>();
+        retrieveSchema(schema, relationship.getType().name());
+        return schema;
+    }
+
+    private void retrieveSchema(Map<String, String> schema, String labelName) {
+        final Node metaNode = graphDatabaseService.findNode(METADATA, LABEL_PROPERTY, labelName);
+        if (metaNode != null) {
+            final String[] schemaEntries = (String[]) metaNode.getProperty(SCHEMA_PROPERTY);
+            for (final String entry : schemaEntries) {
+                final String[] splitted = entry.trim().split(PROP_NAME_TYPE_SEPARATOR);
+                if (splitted.length == 2) {
+                    schema.put(splitted[0], splitted[1]);
                 }
             }
         }
-        return nodeSchema;
     }
 
 }

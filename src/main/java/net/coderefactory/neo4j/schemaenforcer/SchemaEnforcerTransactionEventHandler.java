@@ -1,6 +1,8 @@
 package net.coderefactory.neo4j.schemaenforcer;
 
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.PropertyContainer;
+import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.event.PropertyEntry;
 import org.neo4j.graphdb.event.TransactionData;
 import org.neo4j.graphdb.event.TransactionEventHandler;
@@ -27,16 +29,23 @@ public class SchemaEnforcerTransactionEventHandler extends TransactionEventHandl
         log.info("beforeCommit");
 
         for (final PropertyEntry<Node> prop : data.assignedNodeProperties()) {
-            final Map<String, String> nodeSchema = schemaProvider.getNodeSchema(prop.entity());
-
-            final String key = prop.key();
-            final String propType = nodeSchema.get(key);
-            if (propType != null) {
-                validateProperty(key, propType, prop.value());
-            }
+            validatePropertyEntry(prop);
+        }
+        for (final PropertyEntry<Relationship> prop : data.assignedRelationshipProperties()) {
+            validatePropertyEntry(prop);
         }
 
         return null;
+    }
+
+    private void validatePropertyEntry(PropertyEntry<? extends PropertyContainer> prop) throws Exception {
+        final Map<String, String> schema = schemaProvider.getSchema(prop.entity());
+
+        final String key = prop.key();
+        final String propType = schema.get(key);
+        if (propType != null) {
+            validateProperty(key, propType, prop.value());
+        }
     }
 
     private void validateProperty(final String key, final String propType, final Object value) throws Exception {

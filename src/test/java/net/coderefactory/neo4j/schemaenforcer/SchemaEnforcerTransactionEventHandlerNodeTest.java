@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.neo4j.graphdb.Node;
+import org.neo4j.graphdb.Relationship;
 import org.neo4j.graphdb.event.PropertyEntry;
 import org.neo4j.graphdb.event.TransactionData;
 import org.neo4j.kernel.impl.logging.StoreLogService;
@@ -22,7 +23,7 @@ import static org.mockito.Mockito.when;
  * Tests for {@link SchemaEnforcerTransactionEventHandler}.
  */
 @RunWith(MockitoJUnitRunner.class)
-public class SchemaEnforcerTransactionEventHandlerTest {
+public class SchemaEnforcerTransactionEventHandlerNodeTest {
 
     public static final String FIELD = "field";
 
@@ -42,13 +43,13 @@ public class SchemaEnforcerTransactionEventHandlerTest {
     @Before
     public void setUp(){
         schema = new HashMap<>();
-        when(schemaProvider.getNodeSchema(any(Node.class))).thenReturn(schema);
+        when(schemaProvider.getSchema(any(Node.class))).thenReturn(schema);
 
         when(logService.getUserLog(any(Class.class))).thenReturn(log);
 
         schemaEnforcer = new SchemaEnforcerTransactionEventHandler(schemaProvider, logService);
 
-        final PropertyEntry<Node> propertyEntry = new PropertyEntry<Node>() {
+        final PropertyEntry<Node> nodePropertyEntry = new PropertyEntry<Node>() {
             @Override
             public Node entity() {
                 return null;
@@ -66,7 +67,9 @@ public class SchemaEnforcerTransactionEventHandlerTest {
                 return "The value is a string";
             }
         };
-        when(data.assignedNodeProperties()).thenReturn(Collections.singleton(propertyEntry));
+        when(data.assignedNodeProperties()).thenReturn(Collections.singleton(nodePropertyEntry));
+
+        when(data.assignedRelationshipProperties()).thenReturn(Collections.<PropertyEntry<Relationship>>emptyList());
     }
 
     @Test
