@@ -6,12 +6,31 @@
 
     <groupId>net.coderefactory</groupId>
     <artifactId>neo4j.schema_enforcer</artifactId>
+    <name>Neo4j Schema Enforcer</name>
     <description>This is a kernel plugin for providing way to enforce schema of nodes with given label</description>
+    <url>https://github.com/jarst/neo4j-schema-enforcer</url>
     <version>0.0.1-SNAPSHOT</version>
+
+    <licenses>
+        <license>
+            <name>GNU General Public License, Version 3</name>
+            <url>http://www.gnu.org/licenses/gpl-3.0.html</url>
+        </license>
+    </licenses>
 
     <developers>
         <developer><url>https://github.com/jarst</url></developer>
     </developers>
+
+    <scm>
+        <connection>scm:git:git@github.com:jarst/neo4j-schema-enforcer.git</connection>
+        <developerConnection>scm:git:git@github.com:jarst/neo4j-schema-enforcer.git</developerConnection>
+        <url>git@github.com:jarst/neo4j-schema-enforcer.git</url>
+    </scm>
+
+    <ciManagement>
+        <url>https://travis-ci.org/jarst/neo4j-schema-enforcer</url>
+    </ciManagement>
 
     <distributionManagement>
         <snapshotRepository>
