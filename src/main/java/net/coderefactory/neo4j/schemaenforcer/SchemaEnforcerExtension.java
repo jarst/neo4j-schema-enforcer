@@ -1,5 +1,7 @@
 package net.coderefactory.neo4j.schemaenforcer;
 
+import net.coderefactory.neo4j.schemaenforcer.schema.DbSchemaProvider;
+import net.coderefactory.neo4j.schemaenforcer.schema.SchemaProvider;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.event.TransactionEventHandler;
 import org.neo4j.kernel.extension.KernelExtensionFactory;

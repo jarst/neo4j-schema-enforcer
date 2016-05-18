@@ -1,4 +1,4 @@
-package net.coderefactory.neo4j.schemaenforcer;
+package net.coderefactory.neo4j.schemaenforcer.schema;
 
 import org.neo4j.graphdb.*;
 

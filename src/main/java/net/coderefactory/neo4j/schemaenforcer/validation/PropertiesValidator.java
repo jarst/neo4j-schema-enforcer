@@ -1,6 +1,6 @@
 package net.coderefactory.neo4j.schemaenforcer.validation;
 
-import net.coderefactory.neo4j.schemaenforcer.SchemaProvider;
+import net.coderefactory.neo4j.schemaenforcer.schema.SchemaProvider;
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.event.PropertyEntry;
 import org.neo4j.kernel.impl.logging.LogService;
