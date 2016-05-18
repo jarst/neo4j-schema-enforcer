@@ -9,7 +9,7 @@
     <name>Neo4j Schema Enforcer</name>
     <description>This is a kernel plugin for providing way to enforce schema of nodes with given label</description>
     <url>https://github.com/jarst/neo4j-schema-enforcer</url>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1</version>
 
     <licenses>
         <license>
