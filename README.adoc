@@ -1,9 +1,9 @@
 == Neo4j Schema Enforcer extension
 image:https://travis-ci.org/jarst/neo4j-schema-enforcer.svg?branch=master["Build Status", link="https://travis-ci.org/jarst/neo4j-schema-enforcer"]
-image:https://coveralls.io/repos/github/redBorder/rbforwarder/badge.svg?branch=master["Coverage",link=https://coveralls.io/github/redBorder/rbforwarder?branch=master]
 image:https://coveralls.io/repos/github/jarst/neo4j-schema-enforcer/badge.svg?branch=master["Coverage", link=https://coveralls.io/github/jarst/neo4j-schema-enforcer?branch=master]
+image:https://api.codacy.com/project/badge/Grade/91ab5784f82c4efc9e6714a6ab2c45bb["Codacy code quality", link="https://www.codacy.com/app/jarek-strzelecki/neo4j-schema-enforcer?utm_source=github.com&utm_medium=referral&utm_content=jarst/neo4j-schema-enforcer&utm_campaign=Badge_Grade"]
 
-This is a Neo4j Kernel Extension that allows you to enforce certain schema on graph nodes.
+This is a Neo4j Kernel Extension that allows you to enforce certain schema on graph nodes and edges.
 
 Since it is Neo4j already supports property existence constraints, this plugin only validates, that
 properties are of same type as specified node schema definition.
@@ -14,7 +14,7 @@ It does not validates existing nodes, but prevents adding of new properties to n
 
 === Installation
 * Clone this repository and run `mvn install`
-* Copy `target/neo4j.schema_enforcer-0.0.1-SNAPSHOT.jar` to `plugins` forlder of Neo4j installation
+* Copy `target/neo4j.schema_enforcer-0.0.1-SNAPSHOT.jar` to `plugins` folder in Neo4j installation folder
 * Restart Neo4j
 
 ===  Node Schemas
@@ -23,7 +23,7 @@ Schemas are stored in nodes with *Metadata* label.
 
 Each node defining schema should have following properties:
 
- * `label` - label of taget nodes on which schema should be enforced
+ * `label` - label of target nodes or relationships on which schema should be enforced
  * `schema` - definition of schema for nodes having the same label as the one in `label` property
 
 It is *highly advised* to create an unique constraint on Metadata.label property:
