@@ -1,5 +1,6 @@
 package net.coderefactory.neo4j.schemaenforcer;
 
+import net.coderefactory.neo4j.schemaenforcer.schema.Schema;
 import net.coderefactory.neo4j.schemaenforcer.schema.SchemaProvider;
 import net.coderefactory.neo4j.schemaenforcer.validation.PropertyTypeValidator;
 import net.coderefactory.neo4j.schemaenforcer.validation.SchemaViolationException;
@@ -31,7 +32,7 @@ public class SchemaEnforcerTransactionEventHandlerNodeTest {
 
     public static final String FIELD = "field";
 
-    private Map<String, String> schema;
+    private Schema schema;
 
     @Mock
     private SchemaProvider schemaProvider;
@@ -46,7 +47,7 @@ public class SchemaEnforcerTransactionEventHandlerNodeTest {
 
     @Before
     public void setUp(){
-        schema = new HashMap<>();
+        schema = new Schema();
         when(schemaProvider.getSchema(any(Node.class))).thenReturn(schema);
 
         when(logService.getUserLog(any(Class.class))).thenReturn(log);
@@ -83,14 +84,14 @@ public class SchemaEnforcerTransactionEventHandlerNodeTest {
 
     @Test
     public void testCommitOnValidSchema() throws Exception {
-        schema.put(FIELD, Type.STRING);
+        schema.setType(FIELD, Type.STRING);
 
         schemaEnforcer.beforeCommit(data);
     }
 
     @Test(expected = SchemaViolationException.class)
     public void testRollbackOnInValidSchema() throws Exception {
-        schema.put(FIELD, Type.NUMBER);
+        schema.setType(FIELD, Type.NUMBER);
 
         schemaEnforcer.beforeCommit(data);
     }

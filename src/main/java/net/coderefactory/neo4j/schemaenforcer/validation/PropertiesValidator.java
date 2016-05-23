@@ -1,5 +1,6 @@
 package net.coderefactory.neo4j.schemaenforcer.validation;
 
+import net.coderefactory.neo4j.schemaenforcer.schema.Schema;
 import net.coderefactory.neo4j.schemaenforcer.schema.SchemaProvider;
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.event.PropertyEntry;
@@ -19,10 +20,10 @@ public class PropertiesValidator {
     }
 
     public void validatePropertyEntry(PropertyEntry<? extends PropertyContainer> prop) throws SchemaViolationException {
-        final Map<String, String> schema = schemaProvider.getSchema(prop.entity());
+        final Schema schema = schemaProvider.getSchema(prop.entity());
 
         final String key = prop.key();
-        final String propType = schema.get(key);
+        final String propType = schema.getType(key);
         if (propType != null) {
             validateProperty(key, propType, prop.value());
         }

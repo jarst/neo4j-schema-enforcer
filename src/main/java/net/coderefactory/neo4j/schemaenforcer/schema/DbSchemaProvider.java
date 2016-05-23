@@ -29,7 +29,11 @@ public class DbSchemaProvider implements SchemaProvider {
 
     /** {@inheritDoc} */
     @Override
-    public Map<String, String> getSchema(final PropertyContainer propertyContainer) {
+    public Schema getSchema(final PropertyContainer propertyContainer) {
+        return new Schema(getSchemaMap(propertyContainer));
+    }
+
+    private Map<String, String> getSchemaMap(final PropertyContainer propertyContainer) {
         if (propertyContainer instanceof Node) {
             return getSchema((Node) propertyContainer);
         } else if (propertyContainer instanceof Relationship) {

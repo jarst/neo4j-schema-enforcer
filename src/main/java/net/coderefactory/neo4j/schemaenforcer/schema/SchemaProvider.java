@@ -4,8 +4,6 @@ import org.neo4j.graphdb.Node;
 import org.neo4j.graphdb.PropertyContainer;
 import org.neo4j.graphdb.Relationship;
 
-import java.util.Map;
-
 public interface SchemaProvider {
 
     /**
@@ -13,6 +11,6 @@ public interface SchemaProvider {
      *
      * @return map where key is the name of property and value type specifier.
      */
-    Map<String, String> getSchema(final PropertyContainer propertyContainer);
+    Schema getSchema(final PropertyContainer propertyContainer);
 
 }

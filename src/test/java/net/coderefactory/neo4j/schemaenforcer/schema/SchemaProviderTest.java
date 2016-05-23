@@ -58,42 +58,42 @@ public class SchemaProviderTest {
 
     @Test
     public void testGetSchemaForNode() throws Exception {
-        final Map<String, String> schema = schemaProvider.getSchema(dataNode);
+        final Schema schema = schemaProvider.getSchema(dataNode);
 
         assertNotNull("Schema is returned", this.schemaDefinition);
-        assertThat(schema.isEmpty(), is(false));
+        assertThat(schema.isDefined(), is(true));
 
-        assertEquals("string", schema.get("name"));
-        assertEquals("number", schema.get("price"));
-        assertEquals("array[int]", schema.get("points"));
+        assertEquals("string", schema.getType("name"));
+        assertEquals("number", schema.getType("price"));
+        assertEquals("array[int]", schema.getType("points"));
 
-        assertNull(schema.get("no_separator"));
-        assertNull(schema.get("two_separator"));
-        assertNull(schema.get("not_defined"));
+        assertNull(schema.getType("no_separator"));
+        assertNull(schema.getType("two_separator"));
+        assertNull(schema.getType("not_defined"));
     }
 
     @Test
     public void testGetSchemaForRelationship() throws Exception {
-        final Map<String, String> schema = schemaProvider.getSchema(relationship);
+        final Schema schema = schemaProvider.getSchema(relationship);
 
         assertNotNull("Schema is returned", schema);
-        assertThat(schema.isEmpty(), is(false));
+        assertThat(schema.isDefined(), is(true));
 
-        assertEquals("string", schema.get("name"));
-        assertEquals("number", schema.get("price"));
-        assertEquals("array[int]", schema.get("points"));
+        assertEquals("string", schema.getType("name"));
+        assertEquals("number", schema.getType("price"));
+        assertEquals("array[int]", schema.getType("points"));
 
-        assertNull(schema.get("no_separator"));
-        assertNull(schema.get("two_separator"));
-        assertNull(schema.get("not_defined"));
+        assertNull(schema.getType("no_separator"));
+        assertNull(schema.getType("two_separator"));
+        assertNull(schema.getType("not_defined"));
     }
 
     @Test
     public void handleUnsupportedPropertyContainer() {
         final PropertyContainer unsupportedContainer = mock(PropertyContainer.class);
-        final Map<String, String> schema = schemaProvider.getSchema(unsupportedContainer);
+        final Schema schema = schemaProvider.getSchema(unsupportedContainer);
 
         assertNotNull("Schema is returned", schema);
-        assertThat("Schema for unsupported PropertyContainer is empty", schema.isEmpty(), is(true));
+        assertThat("Schema for unsupported PropertyContainer is empty", schema.isDefined(), is(false));
     }
 }
