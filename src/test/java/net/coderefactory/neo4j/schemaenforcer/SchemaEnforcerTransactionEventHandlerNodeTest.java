@@ -45,9 +45,6 @@ public class SchemaEnforcerTransactionEventHandlerNodeTest {
 
     @Before
     public void setUp(){
-        schema = new Schema();
-        when(schemaProvider.getSchema(any(Node.class))).thenReturn(schema);
-
         when(logService.getUserLog(any(Class.class))).thenReturn(log);
 
         schemaEnforcer = new SchemaEnforcerTransactionEventHandler(schemaProvider, logService);
@@ -77,19 +74,24 @@ public class SchemaEnforcerTransactionEventHandlerNodeTest {
 
     @Test
     public void testCommitOnNoSchema() throws Exception {
+        schema = new Schema.Builder().build();
+        when(schemaProvider.getSchema(any(Node.class))).thenReturn(schema);
+
         schemaEnforcer.beforeCommit(data);
     }
 
     @Test
     public void testCommitOnValidSchema() throws Exception {
-        schema.setType(FIELD, Type.String);
+        schema = new Schema.Builder().property(FIELD, Type.String).build();
+        when(schemaProvider.getSchema(any(Node.class))).thenReturn(schema);
 
         schemaEnforcer.beforeCommit(data);
     }
 
     @Test(expected = SchemaViolationException.class)
     public void testRollbackOnInValidSchema() throws Exception {
-        schema.setType(FIELD, Type.Number);
+        schema = new Schema.Builder().property(FIELD, Type.Number).build();
+        when(schemaProvider.getSchema(any(Node.class))).thenReturn(schema);
 
         schemaEnforcer.beforeCommit(data);
     }

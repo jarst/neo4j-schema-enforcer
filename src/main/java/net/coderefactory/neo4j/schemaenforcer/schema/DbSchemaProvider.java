@@ -31,34 +31,30 @@ public class DbSchemaProvider implements SchemaProvider {
     /** {@inheritDoc} */
     @Override
     public Schema getSchema(final PropertyContainer propertyContainer) {
-        return new Schema(getSchemaMap(propertyContainer));
-    }
-
-    private Map<String, Type> getSchemaMap(final PropertyContainer propertyContainer) {
         if (propertyContainer instanceof Node) {
             return getSchema((Node) propertyContainer);
         } else if (propertyContainer instanceof Relationship) {
             return getSchema((Relationship) propertyContainer);
         } else {
-            return Collections.emptyMap();
+            return new Schema.Builder().build();
         }
     }
 
-    private Map<String, Type> getSchema(final Node node) {
-        final Map<String, Type> schema = new HashMap<>();
+    private Schema getSchema(final Node node) {
+        final Schema.Builder builder = new Schema.Builder();
         for (final Label label : node.getLabels()) {
-            retrieveSchema(schema, label.name());
+            retrieveSchema(builder, label.name());
         }
-        return schema;
+        return builder.build();
     }
 
-    private Map<String, Type> getSchema(final Relationship relationship) {
-        final Map<String, Type> schema = new HashMap<>();
-        retrieveSchema(schema, relationship.getType().name());
-        return schema;
+    private Schema getSchema(final Relationship relationship) {
+        final Schema.Builder builder = new Schema.Builder();
+        retrieveSchema(builder, relationship.getType().name());
+        return builder.build();
     }
 
-    private void retrieveSchema(Map<String, Type> schema, String labelName) {
+    private void retrieveSchema(final Schema.Builder builder, final String labelName) {
         final Node metaNode = graphDatabaseService.findNode(METADATA, LABEL_PROPERTY, labelName);
         if (metaNode != null) {
             final String[] schemaEntries = (String[]) metaNode.getProperty(SCHEMA_PROPERTY);
@@ -69,7 +65,7 @@ public class DbSchemaProvider implements SchemaProvider {
                     final String typeSpecifier = splitted[1].trim();
 
                     final Type propertyType = Type.getFor(typeSpecifier);
-                    schema.put(propertyName, propertyType);
+                    builder.property(propertyName, propertyType);
                 }
             }
         }
