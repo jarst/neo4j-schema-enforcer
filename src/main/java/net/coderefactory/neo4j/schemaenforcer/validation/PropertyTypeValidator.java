@@ -10,37 +10,6 @@ import java.util.Map;
  */
 abstract public class PropertyTypeValidator {
 
-    public static final String BOOL = "bool";
-    public static final String INT = "int";
-    public static final String NUMBER = "number";
-    public static final String STRING = "string";
-    public static final String ARRAY_BOOL = "array[bool]";
-    public static final String ARRAY_INT = "array[int]";
-    public static final String ARRAY_NUMBER = "array[number]";
-    public static final String ARRAY_STRING = "array[string]";
-
-    private static Map<String, PropertyTypeValidator> typeMap = new HashMap<>();
-
-    static {
-        typeMap.put(BOOL, new SimpleType(BOOL, Boolean.class));
-        typeMap.put(INT, new SimpleType(INT, Long.class, Integer.class));
-        typeMap.put(NUMBER, new SimpleType(NUMBER, Number.class));
-        typeMap.put(STRING, new SimpleType(STRING, String.class));
-
-        typeMap.put(ARRAY_BOOL, new CollectionType(ARRAY_BOOL, boolean.class));
-        typeMap.put(ARRAY_INT, new CollectionType(ARRAY_INT, long.class, int.class));
-        typeMap.put(ARRAY_NUMBER, new CollectionType(ARRAY_NUMBER, double.class, float.class, long.class, int.class));
-        typeMap.put(ARRAY_STRING, new CollectionType(ARRAY_STRING, String.class));
-    }
-
-    /**
-     * Gets validator for given property type.
-     */
-    public static PropertyTypeValidator get(final String type) {
-        return typeMap.get(type);
-    }
-
-
     private final String allowedTypeName;
     private final Class[] allowedClasses;
 
@@ -67,7 +36,7 @@ abstract public class PropertyTypeValidator {
 
     /** Validator for primitive types. */
     static class SimpleType extends PropertyTypeValidator {
-        public SimpleType(final String typeName, final Class... allowedClasses) {
+        SimpleType(final String typeName, final Class... allowedClasses) {
             super(typeName, allowedClasses);
         }
 
@@ -79,7 +48,7 @@ abstract public class PropertyTypeValidator {
 
     /** Validator for <quote>collection</quote> types. */
     static class CollectionType extends PropertyTypeValidator {
-        public CollectionType(final String typeName, final Class... allowedClasses) {
+        CollectionType(final String typeName, final Class... allowedClasses) {
             super(typeName, allowedClasses);
         }
 

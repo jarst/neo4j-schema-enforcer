@@ -1,8 +1,8 @@
 package net.coderefactory.neo4j.schemaenforcer;
 
 import net.coderefactory.neo4j.schemaenforcer.schema.SchemaProvider;
-import net.coderefactory.neo4j.schemaenforcer.validation.PropertyTypeValidator;
 import net.coderefactory.neo4j.schemaenforcer.validation.SchemaViolationException;
+import net.coderefactory.neo4j.schemaenforcer.validation.Type;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -82,14 +82,14 @@ public class SchemaEnforcerTransactionEventHandlerRelationshipTest {
 
     @Test
     public void testCommitOnValidSchema() throws Exception {
-        schema.put(FIELD, PropertyTypeValidator.STRING);
+        schema.put(FIELD, Type.STRING);
 
         schemaEnforcer.beforeCommit(data);
     }
 
     @Test(expected = SchemaViolationException.class)
     public void testRollbackOnInValidSchema() throws Exception {
-        schema.put(FIELD, PropertyTypeValidator.NUMBER);
+        schema.put(FIELD, Type.NUMBER);
 
         schemaEnforcer.beforeCommit(data);
     }

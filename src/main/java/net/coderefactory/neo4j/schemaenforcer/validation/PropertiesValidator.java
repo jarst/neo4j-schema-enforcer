@@ -29,7 +29,7 @@ public class PropertiesValidator {
     }
 
     private void validateProperty(final String key, final String propType, final Object value) throws SchemaViolationException {
-        final PropertyTypeValidator propertyTypeValidator = PropertyTypeValidator.get(propType);
+        final PropertyTypeValidator propertyTypeValidator = PropertyTypeValidatorFactory.get(propType);
         if (propertyTypeValidator != null) {
             if (!propertyTypeValidator.isValid(value)) {
                 rollback(key, propertyTypeValidator.getAllowedTypeName());
