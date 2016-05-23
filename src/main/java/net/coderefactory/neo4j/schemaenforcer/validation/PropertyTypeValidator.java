@@ -1,8 +1,6 @@
 package net.coderefactory.neo4j.schemaenforcer.validation;
 
 import java.lang.reflect.Array;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class is responsible for validating single node properties.
@@ -10,11 +8,11 @@ import java.util.Map;
  */
 abstract public class PropertyTypeValidator {
 
-    private final String allowedTypeName;
+    private final Type allowedType;
     private final Class[] allowedClasses;
 
-    protected PropertyTypeValidator(final String allowedTypeName, final Class... innerClazz) {
-        this.allowedTypeName = allowedTypeName;
+    protected PropertyTypeValidator(final Type allowedType, final Class... innerClazz) {
+        this.allowedType = allowedType;
         this.allowedClasses = innerClazz;
     }
 
@@ -27,8 +25,8 @@ abstract public class PropertyTypeValidator {
         return false;
     }
 
-    public String getAllowedTypeName() {
-        return allowedTypeName;
+    public Type getAllowedType() {
+        return allowedType;
     }
 
     /** Checks if given value matches property type */
@@ -36,8 +34,8 @@ abstract public class PropertyTypeValidator {
 
     /** Validator for primitive types. */
     static class SimpleType extends PropertyTypeValidator {
-        SimpleType(final String typeName, final Class... allowedClasses) {
-            super(typeName, allowedClasses);
+        SimpleType(final Type type, final Class... allowedClasses) {
+            super(type, allowedClasses);
         }
 
         @Override
@@ -48,8 +46,8 @@ abstract public class PropertyTypeValidator {
 
     /** Validator for <quote>collection</quote> types. */
     static class CollectionType extends PropertyTypeValidator {
-        CollectionType(final String typeName, final Class... allowedClasses) {
-            super(typeName, allowedClasses);
+        CollectionType(final Type type, final Class... allowedClasses) {
+            super(type, allowedClasses);
         }
 
         @Override

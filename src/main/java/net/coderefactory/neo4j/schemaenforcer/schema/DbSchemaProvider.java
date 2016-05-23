@@ -1,5 +1,6 @@
 package net.coderefactory.neo4j.schemaenforcer.schema;
 
+import net.coderefactory.neo4j.schemaenforcer.validation.Type;
 import org.neo4j.graphdb.*;
 
 import java.util.Collections;
@@ -33,7 +34,7 @@ public class DbSchemaProvider implements SchemaProvider {
         return new Schema(getSchemaMap(propertyContainer));
     }
 
-    private Map<String, String> getSchemaMap(final PropertyContainer propertyContainer) {
+    private Map<String, Type> getSchemaMap(final PropertyContainer propertyContainer) {
         if (propertyContainer instanceof Node) {
             return getSchema((Node) propertyContainer);
         } else if (propertyContainer instanceof Relationship) {
@@ -43,28 +44,32 @@ public class DbSchemaProvider implements SchemaProvider {
         }
     }
 
-    private Map<String, String> getSchema(final Node node) {
-        final Map<String, String> schema = new HashMap<>();
+    private Map<String, Type> getSchema(final Node node) {
+        final Map<String, Type> schema = new HashMap<>();
         for (final Label label : node.getLabels()) {
             retrieveSchema(schema, label.name());
         }
         return schema;
     }
 
-    private Map<String, String> getSchema(final Relationship relationship) {
-        final Map<String, String> schema = new HashMap<>();
+    private Map<String, Type> getSchema(final Relationship relationship) {
+        final Map<String, Type> schema = new HashMap<>();
         retrieveSchema(schema, relationship.getType().name());
         return schema;
     }
 
-    private void retrieveSchema(Map<String, String> schema, String labelName) {
+    private void retrieveSchema(Map<String, Type> schema, String labelName) {
         final Node metaNode = graphDatabaseService.findNode(METADATA, LABEL_PROPERTY, labelName);
         if (metaNode != null) {
             final String[] schemaEntries = (String[]) metaNode.getProperty(SCHEMA_PROPERTY);
             for (final String entry : schemaEntries) {
-                final String[] splitted = entry.trim().split(PROP_NAME_TYPE_SEPARATOR);
+                final String[] splitted = entry.split(PROP_NAME_TYPE_SEPARATOR);
                 if (splitted.length == 2) {
-                    schema.put(splitted[0], splitted[1]);
+                    final String propertyName = splitted[0].trim();
+                    final String typeSpecifier = splitted[1].trim();
+
+                    final Type propertyType = Type.getFor(typeSpecifier);
+                    schema.put(propertyName, propertyType);
                 }
             }
         }

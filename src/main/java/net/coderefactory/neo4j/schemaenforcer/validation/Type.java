@@ -1,8 +1,38 @@
 package net.coderefactory.neo4j.schemaenforcer.validation;
 
-public class Type {
+public enum Type {
 
-    private Type() { }
+    Bool(Type.BOOL),
+    Int(Type.INT),
+    Number(Type.NUMBER),
+    String(Type.STRING),
+    BoolArray(Type.ARRAY_BOOL),
+    IntArray(Type.ARRAY_INT),
+    NumberArray(Type.ARRAY_NUMBER),
+    StringArray(Type.ARRAY_STRING);
+
+    private final String specifier;
+
+    private Type(final String specifier) {
+        this.specifier = specifier;
+    }
+
+    public String getSpecifier() {
+        return specifier;
+    }
+
+    public String toString() {
+        return specifier;
+    }
+
+    public static Type getFor(final String specifier) {
+        for (Type type : values()) {
+            if (type.specifier.equals(specifier)) {
+                return type;
+            }
+        }
+        return null;
+    }
 
     public static final String BOOL = "bool";
     public static final String INT = "int";

@@ -8,24 +8,24 @@ import java.util.Map;
  */
 public class PropertyTypeValidatorFactory {
 
-    private static final Map<String, PropertyTypeValidator> typeMap = new HashMap<>();
+    private static final Map<Type, PropertyTypeValidator> typeMap = new HashMap<>();
 
     static {
-        typeMap.put(Type.BOOL, new PropertyTypeValidator.SimpleType(Type.BOOL, Boolean.class));
-        typeMap.put(Type.INT, new PropertyTypeValidator.SimpleType(Type.INT, Long.class, Integer.class));
-        typeMap.put(Type.NUMBER, new PropertyTypeValidator.SimpleType(Type.NUMBER, Number.class));
-        typeMap.put(Type.STRING, new PropertyTypeValidator.SimpleType(Type.STRING, String.class));
+        typeMap.put(Type.Bool, new PropertyTypeValidator.SimpleType(Type.Bool, Boolean.class));
+        typeMap.put(Type.Int, new PropertyTypeValidator.SimpleType(Type.Int, Long.class, Integer.class));
+        typeMap.put(Type.Number, new PropertyTypeValidator.SimpleType(Type.Number, Number.class));
+        typeMap.put(Type.String, new PropertyTypeValidator.SimpleType(Type.String, String.class));
 
-        typeMap.put(Type.ARRAY_BOOL, new PropertyTypeValidator.CollectionType(Type.ARRAY_BOOL, boolean.class));
-        typeMap.put(Type.ARRAY_INT, new PropertyTypeValidator.CollectionType(Type.ARRAY_INT, long.class, int.class));
-        typeMap.put(Type.ARRAY_NUMBER, new PropertyTypeValidator.CollectionType(Type.ARRAY_NUMBER, double.class, float.class, long.class, int.class));
-        typeMap.put(Type.ARRAY_STRING, new PropertyTypeValidator.CollectionType(Type.ARRAY_STRING, String.class));
+        typeMap.put(Type.BoolArray, new PropertyTypeValidator.CollectionType(Type.BoolArray, boolean.class));
+        typeMap.put(Type.IntArray, new PropertyTypeValidator.CollectionType(Type.IntArray, long.class, int.class));
+        typeMap.put(Type.NumberArray, new PropertyTypeValidator.CollectionType(Type.NumberArray, double.class, float.class, long.class, int.class));
+        typeMap.put(Type.StringArray, new PropertyTypeValidator.CollectionType(Type.StringArray, String.class));
     }
 
     /**
      * Gets validator for given property type.
      */
-    public static PropertyTypeValidator get(final String type) {
+    public static PropertyTypeValidator get(final Type type) {
         return typeMap.get(type);
     }
 

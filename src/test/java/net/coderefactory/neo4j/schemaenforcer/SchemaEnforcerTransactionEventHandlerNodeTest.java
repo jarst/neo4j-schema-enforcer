@@ -18,8 +18,6 @@ import org.neo4j.kernel.impl.logging.StoreLogService;
 import org.neo4j.logging.Log;
 
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -84,14 +82,14 @@ public class SchemaEnforcerTransactionEventHandlerNodeTest {
 
     @Test
     public void testCommitOnValidSchema() throws Exception {
-        schema.setType(FIELD, Type.STRING);
+        schema.setType(FIELD, Type.String);
 
         schemaEnforcer.beforeCommit(data);
     }
 
     @Test(expected = SchemaViolationException.class)
     public void testRollbackOnInValidSchema() throws Exception {
-        schema.setType(FIELD, Type.NUMBER);
+        schema.setType(FIELD, Type.Number);
 
         schemaEnforcer.beforeCommit(data);
     }

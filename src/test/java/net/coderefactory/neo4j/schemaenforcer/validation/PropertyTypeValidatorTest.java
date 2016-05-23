@@ -29,7 +29,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testBool() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.BOOL);
+        validator = PropertyTypeValidatorFactory.get(Type.Bool);
 
         assertEquals(true, validator.isValid(boolValue));
         assertEquals(false, validator.isValid(intValue));
@@ -49,7 +49,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testInt() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.INT);
+        validator = PropertyTypeValidatorFactory.get(Type.Int);
 
         assertEquals(false, validator.isValid(boolValue));
         assertEquals(true, validator.isValid(intValue));
@@ -69,7 +69,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testNumber() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.NUMBER);
+        validator = PropertyTypeValidatorFactory.get(Type.Number);
 
         assertEquals(false, validator.isValid(boolValue));
         assertEquals(true, validator.isValid(intValue));
@@ -89,7 +89,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testString() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.STRING);
+        validator = PropertyTypeValidatorFactory.get(Type.String);
 
         assertEquals(false, validator.isValid(boolValue));
         assertEquals(false, validator.isValid(intValue));
@@ -109,7 +109,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testBoolArray() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.ARRAY_BOOL);
+        validator = PropertyTypeValidatorFactory.get(Type.BoolArray);
 
         assertEquals(false, validator.isValid(boolValue));
         assertEquals(false, validator.isValid(intValue));
@@ -129,7 +129,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testIntArray() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.ARRAY_INT);
+        validator = PropertyTypeValidatorFactory.get(Type.IntArray);
 
         assertEquals(false, validator.isValid(boolValue));
         assertEquals(false, validator.isValid(intValue));
@@ -149,7 +149,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testNumberArray() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.ARRAY_NUMBER);
+        validator = PropertyTypeValidatorFactory.get(Type.NumberArray);
 
         assertEquals(false, validator.isValid(boolValue));
         assertEquals(false, validator.isValid(intValue));
@@ -169,7 +169,7 @@ public class PropertyTypeValidatorTest {
 
     @Test
     public void testStringArray() throws Exception {
-        validator = PropertyTypeValidatorFactory.get(Type.ARRAY_STRING);
+        validator = PropertyTypeValidatorFactory.get(Type.StringArray);
 
         assertEquals(false, validator.isValid(boolValue));
         assertEquals(false, validator.isValid(intValue));

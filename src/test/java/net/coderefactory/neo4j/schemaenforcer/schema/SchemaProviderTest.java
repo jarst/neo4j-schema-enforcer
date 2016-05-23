@@ -1,5 +1,6 @@
 package net.coderefactory.neo4j.schemaenforcer.schema;
 
+import net.coderefactory.neo4j.schemaenforcer.validation.Type;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,9 +64,9 @@ public class SchemaProviderTest {
         assertNotNull("Schema is returned", this.schemaDefinition);
         assertThat(schema.isDefined(), is(true));
 
-        assertEquals("string", schema.getType("name"));
-        assertEquals("number", schema.getType("price"));
-        assertEquals("array[int]", schema.getType("points"));
+        assertEquals(Type.String, schema.getType("name"));
+        assertEquals(Type.Number, schema.getType("price"));
+        assertEquals(Type.IntArray, schema.getType("points"));
 
         assertNull(schema.getType("no_separator"));
         assertNull(schema.getType("two_separator"));
@@ -79,9 +80,9 @@ public class SchemaProviderTest {
         assertNotNull("Schema is returned", schema);
         assertThat(schema.isDefined(), is(true));
 
-        assertEquals("string", schema.getType("name"));
-        assertEquals("number", schema.getType("price"));
-        assertEquals("array[int]", schema.getType("points"));
+        assertEquals(Type.String, schema.getType("name"));
+        assertEquals(Type.Number, schema.getType("price"));
+        assertEquals(Type.IntArray, schema.getType("points"));
 
         assertNull(schema.getType("no_separator"));
         assertNull(schema.getType("two_separator"));
